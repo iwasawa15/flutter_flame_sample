@@ -26,37 +26,41 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. **/
 
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'helpers/direction.dart';
 import 'helpers/joypad.dart';
+import 'ray_world_game.dart';
 
 class MainGamePage extends StatefulWidget {
-  const MainGamePage({Key? key}) : super(key: key);
+	const MainGamePage({Key? key}) : super(key: key);
 
-  @override
-  MainGameState createState() => MainGameState();
+	@override
+	MainGameState createState() => MainGameState();
 }
 
 class MainGameState extends State<MainGamePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
-        body: Stack(
-          children: [
-            // TODO 1
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: Joypad(onDirectionChanged: onJoypadDirectionChanged),
-              ),
-            )
-          ],
-        ));
-  }
+	RayWorldGame game = RayWorldGame();
 
-  void onJoypadDirectionChanged(Direction direction) {
-    // TODO 2
-  }
+	@override
+	Widget build(BuildContext context) {
+		return Scaffold(
+				backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
+				body: Stack(
+					children: [
+						GameWidget(game: game),
+						Align(
+							alignment: Alignment.bottomRight,
+							child: Padding(
+								padding: const EdgeInsets.all(32.0),
+								child: Joypad(onDirectionChanged: onJoypadDirectionChanged),
+							),
+						)
+					],
+				));
+	}
+
+	void onJoypadDirectionChanged(Direction direction) {
+		game.onJoypadDirectionChanged(direction);
+	}
 }
